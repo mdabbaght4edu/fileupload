@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UploadingLagreFiles_JavaScriptFileSplit", "UploadingLagreFiles_JavaScriptFileSplit.csproj", "{5CD6C0FC-5C41-4691-9EDA-233CCBEB9020}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CD6C0FC-5C41-4691-9EDA-233CCBEB9020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CD6C0FC-5C41-4691-9EDA-233CCBEB9020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CD6C0FC-5C41-4691-9EDA-233CCBEB9020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CD6C0FC-5C41-4691-9EDA-233CCBEB9020}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A7935794-3CA5-4555-88DA-6617B7D81DF8}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,178 @@
+﻿@{
+	Layout = null;
+}
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Upload</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	@*<link href="~/lib/blueimp-file-upload/css/jquery.fileupload.css" rel="stylesheet" />
+		<link href="~/lib/blueimp-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet" />*@
+	<link href="~/lib/blueimp-file-upload/css/jquery.fileupload.min.css" rel="stylesheet" />
+	<link href="~/lib/blueimp-file-upload/css/jquery.fileupload-ui.min.css" rel="stylesheet" />
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">UploadingLagreFiles_JavaScriptFileSplit</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			<div class="text-center">
+				<h1 class="display-4">Upload Large File</h1>
+				<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+				<div>
+					<input id="file-upload" name="file-upload" type="file" style="display: none;" />
+					<a id="file-upload-select" href="#" class="btn btn-primary">Select file</a>
+					<br />
+					<span id="file-upload-info"></span>
+				</div>
+				<a id="file-submit" href="#" class="btn btn-primary" style="display: none;">Upload file</a>
+			</div>
+		</main>
+	</div>
+
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2021 - UploadingLagreFiles_JavaScriptFileSplit - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
+	</footer>
+
+	@*
+		<script src="~/lib/jquery/jquery.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/vendor/jquery.ui.widget.js"></script>
+		<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+		<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.fileupload.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-process.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-image.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-audio.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-video.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-validate.js"></script>
+		<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-ui.js"></script>
+	*@
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/vendor/jquery.ui.widget.min.js"></script>
+	<script src="//blueimp.github.io/JavaScript-Load-Image/js/load-image.all.min.js"></script>
+	<script src="//blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.iframe-transport.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.fileupload.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-process.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-image.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-audio.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-video.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-validate.min.js"></script>
+	<script src="~/lib/blueimp-file-upload/js/jquery.fileupload-ui.min.js"></script>
+
+	<script>
+		$(document).ready(function () {
+			$('#file-upload-select').on('click', function (e) {
+				$("#file-upload").trigger('click');
+			});
+
+			var acceptFileTypes = /(\.|\/)(gif|jpe?g|png|pdf|zip|rar)$/i
+
+			var fileupload = $("#file-upload").fileupload({
+				url: '/Upload/Index',
+				dataType: 'json',
+				autoUpload: true,
+				singleFileUploads: true,
+				maxChunkSize: 1024 * 1024 * 1,
+				progressInterval: 1000,
+				bitrateInterval: 1000,
+				maxFileSize: 1024 * 1024 * 100,
+				acceptFileTypes: acceptFileTypes,
+			});
+			fileupload.on('fileuploadadd', function (e, data) {
+				console.log("add: ", data.files);
+				var self = this;
+				var file = data.files[0];
+				fileData = data; // save data to be able to submit them later
+
+				if (window.File && window.Blob) {
+					// update form data
+					data.formData = {
+						//filname: data.files[0].name,
+						//__RequestVerificationToken: $("#upload-form").find('input[name=__RequestVerificationToken]').val()
+					};
+				} else {
+					// chunk upload not supported
+				}
+				if (file.error) {
+					console.log("add: ", file.error);
+				} else {
+					$('#file-upload-info').text(`${file.name} - 0 %`);
+				}
+				$('#file-upload-info').text(`${data.files[0].name} - 0 %`);
+
+			});
+			fileupload.on('fileuploadchange', function (e, data) {
+				console.log('change:');
+				var file = data.files[0];
+				if (!(acceptFileTypes).test(file.name)) {
+					console.log('Not Allowed');
+					return false;
+				}
+				return true;
+			});
+			fileupload.on('fileuploadprogress', function (e, data) {
+				var progress = parseInt((data.loaded / data.total) * 100, 10);
+				console.log('progress:', data.loaded, data.total, data.bitrate, progress);
+				$('#file-upload-info').text(`${data.files[0].name} - ${progress} %`);
+			});
+			fileupload.on('fileuploadsubmit', function (e, data) {
+				console.log('submit:');
+			});
+			fileupload.on('fileuploaddone', function (e, data) {
+				console.log('done:');
+			});
+			fileupload.on('fileuploadfail', function (e, data) {
+				console.log('fail:');
+			});
+			fileupload.on('fileuploadchunkbeforesend', function (e, data) {
+				console.log('chunkbeforesend:');
+			});
+			fileupload.on('fileuploadchunksend', function (e, data) {
+				console.log('chunksend:');
+			});
+			fileupload.on('fileuploadchunkdone', function (e, data) {
+				console.log('chunkdone:');
+			});
+			fileupload.on('fileuploadchunkfail', function (e, data) {
+				console.log('chunkfail:');
+			});
+			fileupload.on('fileuploadchunkalways', function (e, data) {
+				console.log('chunkalways:');
+			});
+
+			$("#file-submit").on('click', function (e) {
+				e.preventDefault();
+				fileData.submit();
+			});
+		});
+	</script>
+</body>
+</html>

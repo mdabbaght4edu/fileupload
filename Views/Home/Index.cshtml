@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Upload Large File</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+
+    <input type="file" id="uploadFile" name="file" />  <a class="btn btn-primary" href="#" id="btnUpload">Upload file</a>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#btnUpload').click(function () {
+            UploadFile($('#uploadFile')[0].files);
+        }
+        )
+    });
+
+    var countSpiltFiles = 0;
+    function UploadFile(TargetFile) {
+        // create array to store the buffer chunks  
+        var FileChunk = [];
+        // the file object itself that we will work with  
+        var file = TargetFile[0];
+        // set up other initial vars  
+        var MaxFileSizeMB = 5;
+        var BufferChunkSize = MaxFileSizeMB * (1024 * 1024);
+        var ReadBuffer_Size = 1024;
+        var FileStreamPos = 0;
+        // set the initial chunk length  
+        var EndPos = BufferChunkSize;
+        var Size = file.size;
+
+        // add to the FileChunk array until we get to the end of the file  
+        while (FileStreamPos < Size) {
+            // "slice" the file from the starting position/offset, to  the required length  
+            FileChunk.push(file.slice(FileStreamPos, EndPos));
+            FileStreamPos = EndPos; // jump by the amount read  
+            EndPos = FileStreamPos + BufferChunkSize; // set next chunk length  
+        }
+        // get total number of "files" we will be sending  
+        var TotalParts = FileChunk.length;
+        var PartCount = 0;
+        // loop through, pulling the first item from the array each time and sending it  
+        while (chunk = FileChunk.shift()) {
+            PartCount++;
+            // file name convention  
+            var FilePartName = file.name + ".part_" + PartCount + "." + TotalParts;
+            // send the file  
+            UploadFileChunk(chunk, FilePartName);
+            countSpiltFiles += 1;
+        }
+    }
+    var countUploadedFiles = 0;
+    var StartedRequests = 0;
+    var listFiles = [];
+    function UploadFileChunk(Chunk, FileName) {
+    
+        var FD = new FormData();
+        FD.append('file', Chunk, FileName);
+        $.ajax({
+            type: "POST",
+            url: 'Home/UploadFile',
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: FD,
+            beforeSend: function () {
+                // setting a timeout
+                StartedRequests += 1;
+            },
+            complete: function (res) {
+                debugger;
+                obj = JSON.parse(res.responseText);
+                if (obj.scusses = true) {
+                    countUploadedFiles += 1;
+                    console.log(obj.fileName);
+                    listFiles.push(obj.fileName);
+                }
+
+
+                if (countUploadedFiles == countSpiltFiles) {
+                    alert("Completed");
+                    mergeFiles();
+                }
+                
+
+
+            }
+        });
+    }
+
+
+    function mergeFiles() {
+        $.ajax({
+            type: "POST",
+            url: 'Home/MergeFiles',
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+            data: listFiles,
+            beforeSend: function () {
+                // setting a timeout
+
+            },
+            complete: function (res) {
+            }
+        });
+    }
+</script>
