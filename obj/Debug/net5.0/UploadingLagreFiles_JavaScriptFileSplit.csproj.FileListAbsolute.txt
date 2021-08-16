@@ -159,3 +159,7 @@ F:\projects\UploadingLagreFiles_JavaScriptFileSplit\obj\Debug\net5.0\UploadingLa
 F:\projects\UploadingLagreFiles_JavaScriptFileSplit\obj\Debug\net5.0\UploadingLagreFiles_JavaScriptFileSplit.genruntimeconfig.cache
 F:\projects\UploadingLagreFiles_JavaScriptFileSplit\bin\Debug\net5.0\libman.json
 F:\projects\UploadingLagreFiles_JavaScriptFileSplit\obj\Debug\net5.0\Razor\Views\Upload\Index.cshtml.g.cs
+F:\projects\UploadingLagreFiles_JavaScriptFileSplit\bin\Debug\net5.0\Azure.Storage.Blobs.dll
+F:\projects\UploadingLagreFiles_JavaScriptFileSplit\bin\Debug\net5.0\Azure.Storage.Common.dll
+F:\projects\UploadingLagreFiles_JavaScriptFileSplit\obj\Debug\net5.0\Razor\Views\Azure\Index.cshtml.g.cs
+F:\projects\UploadingLagreFiles_JavaScriptFileSplit\obj\Debug\net5.0\Razor\Views\Azure\Index - Copy.cshtml.g.cs

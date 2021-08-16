@@ -25,6 +25,7 @@
     ".NETCoreApp,Version=v5.0": {
       "UploadingLagreFiles_JavaScriptFileSplit/1.0.0": {
         "dependencies": {
+          "Azure.Storage.Blobs": "12.7.0",
           "Microsoft.Graph": "4.2.0",
           "Microsoft.AspNetCore.Antiforgery": "5.0.0.0",
           "Microsoft.AspNetCore.Authentication.Abstractions": "5.0.0.0",
@@ -336,6 +337,35 @@
         },
         "compile": {
           "lib/net5.0/Azure.Core.dll": {}
+        }
+      },
+      "Azure.Storage.Blobs/12.7.0": {
+        "dependencies": {
+          "Azure.Storage.Common": "12.6.0",
+          "System.Text.Json": "5.0.2"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Azure.Storage.Blobs.dll": {
+            "assemblyVersion": "12.7.0.0",
+            "fileVersion": "12.700.20.56002"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Azure.Storage.Blobs.dll": {}
+        }
+      },
+      "Azure.Storage.Common/12.6.0": {
+        "dependencies": {
+          "Azure.Core": "1.17.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Azure.Storage.Common.dll": {
+            "assemblyVersion": "12.6.0.0",
+            "fileVersion": "12.600.20.56002"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Azure.Storage.Common.dll": {}
         }
       },
       "Microsoft.Bcl.AsyncInterfaces/1.0.0": {
@@ -2312,6 +2342,20 @@
       "sha512": "sha512-ByJGsP7zqeMG+QFLEpd0ILzWVlRtB1ZWwgkqNWEN2KV0axRyWZDm6uPsKtsfBkNeiPtr4fUW0NSZez69TBSGrA==",
       "path": "azure.core/1.17.0",
       "hashPath": "azure.core.1.17.0.nupkg.sha512"
+    },
+    "Azure.Storage.Blobs/12.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sOO8tIET7AqLsQ0Rd7Vft9ykCw65RUwfRdD+2wg3FWToO5YqkhOP+liJggQm+n8C7JnZAG0Jkb2u6RhBT2F9ew==",
+      "path": "azure.storage.blobs/12.7.0",
+      "hashPath": "azure.storage.blobs.12.7.0.nupkg.sha512"
+    },
+    "Azure.Storage.Common/12.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-plL0m1CA4UVKYpQxs3PaKyVyGmY0Z4pcizXLrHwYgmh7MCeYnm1r1WrbflFrzeSOpFSycsbErj7qxt3qqpz4zA==",
+      "path": "azure.storage.common/12.6.0",
+      "hashPath": "azure.storage.common.12.6.0.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/1.0.0": {
       "type": "package",

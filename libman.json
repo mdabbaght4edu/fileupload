@@ -9,6 +9,11 @@
     {
       "library": "jquery@3.6.0",
       "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "azure-storage@2.10.4",
+      "destination": "wwwroot/lib/azure-storage/"
     }
   ]
 }
