@@ -117,6 +117,7 @@
 			var containerName = options.containerName;
 			var blobName = options.blobName;
 			var sasToken = options.sasToken;
+			var blobfullUrl = `${options.blobServiceUri}/${blobName}`;
 
 			//AzureStorage.Blob.Constants.DEFAULT_PARALLEL_OPERATION_THREAD_COUNT = 1
 
@@ -159,7 +160,7 @@
 					_onError('Error in uploading process');
 				} else {
 					_onProgess(100);
-					_onFinish();
+					_onFinish(blobName);
 				}
 			});
 
@@ -214,10 +215,10 @@
 			if (options && _isFunction(options.onCacnel)) options.onCacnel(self, selectedFile);
 		}
 
-		var _onFinish = function () {
+		var _onFinish = function (blobName) {
 			isUploading = false;
-			_log('Finish');
-			if (options && _isFunction(options.onFinish)) options.onFinish(self, selectedFile);
+			_log('Finish', blobName);
+			if (options && _isFunction(options.onFinish)) options.onFinish(self, selectedFile, blobName);
 		}
 
 		var _log = function () {
@@ -249,7 +250,7 @@
 		onProgress: function (azure, file, progress) { },
 		onCacnel: function (azure, file) { },
 		onError: function (azure, file, error) { },
-		onFinish: function (azure, file) { },
+		onFinish: function (azure, file, blobfullUrl) { },
 	};
 
 }(jQuery));
