@@ -16,6 +16,11 @@
 		}
 
 		this.initialize = function () {
+			if (elm.AzureFileUpload) {
+				return elm.AzureFileUpload;
+			} else {
+				elm.AzureFileUpload = this;
+			}
 			$(document).on('change', elm, function (e) {
 				var file = elm.files.length > 0 ? elm.files[0] : null;
 
@@ -77,34 +82,27 @@
 			handle: function (requestOptions, next) {
 				var self = this;
 				if (self.cancel) {
-					self.log('cancelling before chunk sent');
+					_log('cancelling before chunk sent');
 					return;
 				}
-				if (next) {
-					self.nextCounter++;
-					next(requestOptions, function (returnObject, finalCallback, nextPostCallback) {
-						self.returnCounter++;
-						if (self.cancel) {
-							self.log('cancelling after chunk received');
-							if (self.nextCounter == self.returnCounter && self.onCancelComplete) {
-								self.onCancelComplete();
-							}
+				if (!next) return;
 
-							// REALLY ??? Is this the right way to stop the upload?
-							return;
+				self.nextCounter++;
+				next(requestOptions, function (returnObject, finalCallback, nextPostCallback) {
+					self.returnCounter++;
+					if (self.cancel) {
+						_log('cancelling after chunk received');
+						if (self.nextCounter == self.returnCounter && self.onCancelComplete) {
+							self.onCancelComplete();
 						}
-						if (nextPostCallback) {
-							nextPostCallback(returnObject);
-						} else if (finalCallback) {
-							finalCallback(returnObject);
-						}
-					});
-				}
-			},
-			log: function (msg) {
-				if (this.loggingOn) {
-					console.log('cancelUploadFilter: ' + msg + ' nc: ' + this.nextCounter + ', rc: ' + this.returnCounter);
-				}
+						return;
+					}
+					if (nextPostCallback) {
+						nextPostCallback(returnObject);
+					} else if (finalCallback) {
+						finalCallback(returnObject);
+					}
+				});
 			},
 		};
 
