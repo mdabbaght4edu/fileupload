@@ -141,7 +141,6 @@
 				_onCancel();
 			};
 
-			isUploading = true;
 			_onStart();
 			_onProgess(0);
 
@@ -185,6 +184,7 @@
 		}
 
 		var _onStart = function () {
+			isUploading = true;
 			_log('Start');
 			if (options && _isFunction(options.onStart)) options.onStart(self, selectedFile);
 		}
