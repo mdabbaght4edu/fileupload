@@ -9,7 +9,6 @@
 		var selectedFile = null;
 		var uploadOpertation = null;
 		var uploadProgressIntervalHandle = null;
-		var logging = true;
 
 		if (this.length > 1) {
 			this.each(function () { $(this).AzureFileUpload(options) });
@@ -214,7 +213,7 @@
 		}
 
 		var _log = function (message) {
-			if (!logging) return;
+			if (!options.logging) return;
 			console.log.apply(null, arguments);
 		}
 
@@ -232,6 +231,7 @@
 		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 		maxFileSize: 1024 * 1024 * 10,
 		maxChunkSize: 1024 * 1024 * 1,
+		logging: false,
 		messages: {
 			acceptFileTypes: 'acceptFileTypes errorr',
 			maxFileSize: 'maxFileSize errorrr',
