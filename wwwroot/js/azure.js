@@ -21,33 +21,7 @@
 			} else {
 				elm.AzureFileUpload = this;
 			}
-			$(document).on('change', elm, function (e) {
-				var file = elm.files.length > 0 ? elm.files[0] : null;
-
-				var acceptFileTypes = options.acceptFileTypes;
-				if (file && !acceptFileTypes.test(file.name)) {
-					_onError(options.messages.acceptFileTypes);
-					elm.value = '';
-				}
-
-				var maxSize = options.maxFileSize;
-				if (file && file.size > maxSize) {
-					_onError(options.messages.maxFileSize);
-					elm.value = '';
-				}
-
-				if (elm.value == '') {
-					return false;
-				}
-				else {
-					selectedFile = file;
-					_onSelect();
-					if (options && options.autoUpload === true) {
-						_start();
-					}
-					return true;
-				}
-			});
+			$(document).on('change', elm, _onInputChange);
 			return this;
 		};
 
@@ -59,6 +33,34 @@
 		this.cancel = function () {
 			_cancel();
 			return this;
+		}
+
+		var _onInputChange = function (e) {
+			var file = elm.files.length > 0 ? elm.files[0] : null;
+
+			var acceptFileTypes = options.acceptFileTypes;
+			if (file && !acceptFileTypes.test(file.name)) {
+				_onError(options.messages.acceptFileTypes);
+				elm.value = '';
+			}
+
+			var maxSize = options.maxFileSize;
+			if (file && file.size > maxSize) {
+				_onError(options.messages.maxFileSize);
+				elm.value = '';
+			}
+
+			if (elm.value == '') {
+				return false;
+			}
+			else {
+				selectedFile = file;
+				_onSelect();
+				if (options && options.autoUpload === true) {
+					_start();
+				}
+				return true;
+			}
 		}
 
 		// Filter allowing us to cancel an in-progress upload by setting 'cancel' to true.
