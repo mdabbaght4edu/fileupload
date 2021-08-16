@@ -146,6 +146,12 @@
 			_onStart();
 			_onProgess(0);
 
+			/*
+			 * Configure the CORS with the follwing:
+			 * Allowed methods: PUT
+			 * Allowed headers: content-type,x-ms-blob-content-md5,x-ms-blob-content-type,x-ms-client-request-id,x-ms-date,x-ms-version,x-ms-meta*
+			 * Exposed headers: x-ms-meta*
+			 */
 			var finishedOrError = false;
 			uploadOpertation = blobService.createBlockBlobFromBrowserFile(containerName, blobName, selectedFile, uploadOptions, function (error, result, response) {
 				finishedOrError = true;
