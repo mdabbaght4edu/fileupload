@@ -111,14 +111,14 @@
 			if (isUploading === true) _onError('upload process in progress.');
 
 			// TODO: Call API to get URL, SAS Token, Container name
-			var blobUri = options.blobUri;
+			var blobServiceUri = options.blobServiceUri;
 			var containerName = options.containerName;
 			var blobName = options.blobName;
 			var sasToken = options.sasToken;
 
 			//AzureStorage.Blob.Constants.DEFAULT_PARALLEL_OPERATION_THREAD_COUNT = 1
 
-			var blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, sasToken).withFilter(_cancelUploadFilter);
+			var blobService = AzureStorage.Blob.createBlobServiceWithSas(blobServiceUri, sasToken).withFilter(_cancelUploadFilter);
 
 			var customBlockSize = options.maxChunkSize;
 			blobService.singleBlobPutThresholdInBytes = customBlockSize;
@@ -223,7 +223,7 @@
 	};
 
 	$.fn.AzureFileUpload.defaults = {
-		blobUri: null,
+		blobServiceUri: null,
 		containerName: null,
 		blobName: null,
 		sasToken: null,

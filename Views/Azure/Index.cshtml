@@ -59,7 +59,7 @@
 	<script type="text/javascript">
 
 		var fileupload = $('#FileInput').AzureFileUpload({
-			blobUri: '@Html.Raw(Model.AccountUrl)',
+			blobServiceUri: '@Html.Raw(Model.AccountUrl)',
 			containerName: '@Html.Raw(Model.ContainerName)',
 			blobName: '@Html.Raw(Model.BlobName)',
 			sasToken: '@Html.Raw(Model.SASToken)',
