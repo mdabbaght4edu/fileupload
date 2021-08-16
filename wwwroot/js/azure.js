@@ -118,7 +118,7 @@
 			var blobName = options.blobName;
 			var sasToken = options.sasToken;
 
-			AzureStorage.Blob.Constants.DEFAULT_PARALLEL_OPERATION_THREAD_COUNT = 1
+			//AzureStorage.Blob.Constants.DEFAULT_PARALLEL_OPERATION_THREAD_COUNT = 1
 
 			var blobService = AzureStorage.Blob.createBlobServiceWithSas(blobUri, sasToken).withFilter(_cancelUploadFilter);
 
@@ -169,8 +169,10 @@
 					uploadProgressIntervalHandle = null;
 					return;
 				}
-				var process = uploadOpertation.getCompletePercent();
-				_onProgess(process);
+				if (uploadOpertation) {
+					var process = uploadOpertation.getCompletePercent();
+					_onProgess(process);
+				}
 			}, 200);
 		}
 
@@ -179,20 +181,14 @@
 			_cancelUploadFilter.cancel = true;
 		}
 
-		var _onStart = function () {
-			_log('Start');
-			if (options && _isFunction(options.onStart)) options.onStart(self, selectedFile);
-		}
-
 		var _onSelect = function () {
 			_log('Select');
 			if (options && _isFunction(options.onSelect)) options.onSelect(self, selectedFile);
 		}
 
-		var _onError = function (error) {
-			_log('Error', error);
-			isUploading = false;
-			if (error && options && _isFunction(options.onError)) options.onError(self, selectedFile, error);
+		var _onStart = function () {
+			_log('Start');
+			if (options && _isFunction(options.onStart)) options.onStart(self, selectedFile);
 		}
 
 		var _onProgess = function (progress) {
@@ -200,19 +196,25 @@
 			if (progress !== undefined && progress !== null && options && _isFunction(options.onProgress)) options.onProgress(self, selectedFile, progress);
 		}
 
-		var _onFinish = function () {
-			_log('Finish');
+		var _onError = function (error) {
 			isUploading = false;
-			if (options && _isFunction(options.onFinish)) options.onFinish(self, selectedFile);
+			_log('Error', error);
+			if (error && options && _isFunction(options.onError)) options.onError(self, selectedFile, error);
 		}
 
 		var _onCancel = function () {
-			_log('Cancel');
 			isUploading = false;
-			if (options && _isFunction(options.onCacnel)) options.onCacnel(self, file);
+			_log('Cancel');
+			if (options && _isFunction(options.onCacnel)) options.onCacnel(self, selectedFile);
 		}
 
-		var _log = function (message) {
+		var _onFinish = function () {
+			isUploading = false;
+			_log('Finish');
+			if (options && _isFunction(options.onFinish)) options.onFinish(self, selectedFile);
+		}
+
+		var _log = function () {
 			if (!options.logging) return;
 			console.log.apply(null, arguments);
 		}
