@@ -5,32 +5,40 @@
 		var self = this;
 		var elm = this.length > 0 ? this[0] : null;
 		var options = $.extend({}, $.fn.AzureFileUpload.defaults, options);
+		var isInitialized = false;
 		var isUploading = false;
 		var selectedFile = null;
 		var uploadOpertation = null;
 		var uploadProgressIntervalHandle = null;
 
 		if (this.length > 1) {
-			this.each(function () { $(this).AzureFileUpload(options) });
-			return this;
+			var that = this.filter(function (index, elm) { return elm.tagName.toLowerCase() == 'input'.toLowerCase() && elm.type == 'file'; });
+			that.each(function () { $(this).AzureFileUpload(options) });
+			return that.first();
 		}
 
 		this.initialize = function () {
+			if (!elm || elm.tagName.toLowerCase() != 'input'.toLowerCase() || elm.type != 'file') return this;
 			if (elm.AzureFileUpload) {
 				return elm.AzureFileUpload;
 			} else {
 				elm.AzureFileUpload = this;
 			}
-			$(document).on('change', elm, _onInputChange);
+			if (!isInitialized) {
+				isInitialized = true;
+				$(document).on('change', elm, _onInputChange);
+			}
 			return this;
 		};
 
 		this.start = function () {
+			if (!isInitialized) return this;
 			_start();
 			return this;
 		}
 
 		this.cancel = function () {
+			if (!isInitialized) return this;
 			_cancel();
 			return this;
 		}
