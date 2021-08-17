@@ -14,6 +14,10 @@
       "provider": "unpkg",
       "library": "azure-storage@2.10.4",
       "destination": "wwwroot/lib/azure-storage/"
+    },
+    {
+      "library": "jquery-ajax-unobtrusive@3.2.6",
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive/"
     }
   ]
 }

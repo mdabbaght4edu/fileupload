@@ -12,24 +12,37 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 	<title>Upload</title>
-	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+	@*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>*@
+	<script src="~/lib/jquery/dist/jquery.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+	<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
 	<script src="~/lib/azurestoragejs-3.0.100/bundle/azure-storage.blob.js"></script>
 	@*<script src="~/lib/azurestoragejs-3.0.100/bundle/azure-storage.blob.min.js"></script>*@
-	<script src="~/js/azure.js"></script>
+	<script src="~/js/jquery.azure-file-upload.js"></script>
 </head>
 
 <body>
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form asp-controller="Home" asp-action="UploadSmallFile" enctype="multipart/form-data" id="BlobUploadForm"
-				  method="post" class="form-label-left" role="form">
+			<form id="BlobUploadForm"
+				  data-ajax="true"
+				  data-ajax-method="POST"
+				  data-ajax-url="@Url.Action("Index", "Azure")"
+				  data-ajax-begin="ajax_begin"
+				  data-ajax-success="ajax_success"
+				  data-ajax-failure="ajax_failure"
+				  data-ajax-complete="ajax_complete"
+				  class="form-label-left"
+				  role="form">
 				<div class="modal-body">
 					<div class="form-group">
 						<div class="input-group">
 							<label class="input-group-btn">
 								<span class="btn btn-primary">
 									Browse… <input type="file" style="display: none;" name="file" id="FileInput">
+									<input type="hidden" id="azurePath" name="azurePath" />
 								</span>
 							</label>
 							<input type="text" class="form-control" readonly="" id="BrowseInput">
@@ -37,7 +50,7 @@
 					</div>
 					<div class="form-group">
 						<div class="input-group">
-							<button type="button" value="Upload to Blob" class="btn btn-success" id="UploadBlob" onclick="uploadBlob()">
+							<button type="submit" value="Upload to Blob" class="btn btn-success" id="UploadBlob">
 								Upload to Blob
 							</button>
 						</div>
@@ -83,9 +96,34 @@
 			onCacnel: function (azure, file) { },
 			onError: function (azure, file, error) { },
 			onFinish: function (azure, file, blobName) {
-
+				$('#azurePath').val(blobName);
 			},
 		});
+
+		function submit(e) {
+		}
+
+		function ajax_begin() {
+			console.log('ajax_begin');
+
+			$('#UploadBlob').prop("disabled", true);
+			$('#FileInput').prop("disabled", true);
+		}
+
+		function ajax_success() {
+			console.log('ajax_success');
+		}
+
+		function ajax_failure() {
+			console.log('ajax_failure');
+		}
+
+		function ajax_complete() {
+			console.log('ajax_complete');
+
+			$('#UploadBlob').prop("disabled", false);
+			$('#FileInput').prop("disabled", false);
+		}
 
 	</script>
 </body>

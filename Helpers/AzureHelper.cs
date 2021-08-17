@@ -241,6 +241,36 @@ namespace UploadingLagreFiles_JavaScriptFileSplit.Helpers
                 }
             }
 
+            public static bool Download(string filePath, string localPath)
+            {
+                if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrWhiteSpace(localPath))
+                {
+                    return false;
+                }
+                var dirPath = Path.GetDirectoryName(Path.GetFullPath(localPath));
+                if (!Directory.Exists(dirPath))
+				{
+                    Directory.CreateDirectory(dirPath);
+                }
+
+                try
+                {
+                    filePath = filePath.Trim(new char[] { ' ', '/' });
+                    if (filePath.StartsWith(BlobContainerName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        filePath = filePath.Replace(BlobContainerName, "").Trim(new char[] { ' ', '/' });
+                    }
+
+                    var blobClient = VSchoolBlobContainerClient.GetBlobClient(filePath);
+                    blobClient.DownloadTo(localPath);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+
             public static bool IsBlobPath(string path)
             {
                 if (string.IsNullOrWhiteSpace(path)) return false;

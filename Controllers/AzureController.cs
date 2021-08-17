@@ -158,139 +158,31 @@ namespace UploadingLagreFiles_JavaScriptFileSplit.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Index(UploadViewRequest model)
+		public IActionResult Index(string azurePath)
 		{
-			FileStatus status = null;
-			try
+			var filename = Path.GetFileName(azurePath);
+			var localPath = this.Environment.WebRootPath + "/storage/temp/" + filename;
+
+			if (!AzureHelper.Blob.Download(filename, localPath))
 			{
-				model ??= new UploadViewRequest();
-
-				model.OriginalFile = Request.Form.Files.FirstOrDefault();
-
-				var rangeHeader = Request.Headers["Content-Range"];
-				if (string.IsNullOrEmpty(rangeHeader))
-				{
-					model.IsChunk = false;
-				}
-				else
-				{
-					model.IsChunk = true;
-
-					Match match = Regex.Match(rangeHeader, "^bytes ([\\d]+)-([\\d]+)\\/([\\d]+)$", RegexOptions.IgnoreCase);
-					int bytesFrom = int.Parse(match.Groups[1].Value);
-					int bytesTo = int.Parse(match.Groups[2].Value);
-					int bytesFull = int.Parse(match.Groups[3].Value);
-
-					if (bytesTo == bytesFull)
-						model.IsLast = true;
-					else
-						model.IsLast = false;
-
-					if (bytesFrom == 0)
-					{
-						model.ChunkNumber = 1;
-						model.IsFirst = true;
-					}
-					else
-					{
-						int bytesSize = bytesTo - bytesFrom + 1;
-						model.ChunkNumber = (bytesFrom / bytesSize) + 1;
-						model.IsFirst = false;
-					}
-				}
-
-				if (Request.Headers.ContainsKey("Accept") && Request.Headers["Accept"].ToString().Contains("application/json"))
-				{
-					model.JsonAccepted = true;
-				}
-				else
-				{
-					model.JsonAccepted = false;
-				}
-
-				// Section 2
-				var fileName = model.OriginalFile.FileName;
-				var path = this.Environment.WebRootPath + "/storage/temp/" + fileName;
-
-				if (model.IsChunk)
-				{
-					if (model.IsFirst)
-					{
-						// do some stuff that has to be done before the file starts uploading
-						if (System.IO.File.Exists(path))
-						{
-							System.IO.File.Delete(path);
-						}
-					}
-
-					var inputStream = model.OriginalFile.OpenReadStream();
-
-					using (var fs = new FileStream(path, FileMode.Append, FileAccess.Write))
-					{
-						var buffer = new byte[1024];
-
-						var l = inputStream.Read(buffer, 0, 1024);
-						while (l > 0)
-						{
-							fs.Write(buffer, 0, l);
-							l = inputStream.Read(buffer, 0, 1024);
-						}
-
-						fs.Flush();
-						fs.Close();
-					}
-
-					status = new FileStatus(new FileInfo(path));
-
-					if (model.IsLast)
-					{
-						// do some stuff that has to be done after the file is uploaded
-					}
-				}
-				else
-				{
-					if (System.IO.File.Exists(path))
-					{
-						System.IO.File.Delete(path);
-					}
-					using (Stream fileStream = new FileStream(path, FileMode.Create))
-					{
-						model.OriginalFile.CopyTo(fileStream);
-					}
-					status = new FileStatus(new FileInfo(path));
-				}
-			}
-			catch (Exception ex)
-			{
-				status = new FileStatus
-				{
-					error = "Something went wrong"
-				};
+				return Json(new { status = false, message = "can not download file" });
 			}
 
-			// this is just a browser json support/compatibility workaround
-			if (model.JsonAccepted)
-			{
-				return Json(status);
-			}
-			else
-			{
-				return Json(status, "text/plain");
-			}
+			return Json(new { status = true });
 		}
 
-		[HttpHead]
-		public IActionResult Index(string filename)
-		{
-			var path = this.Environment.WebRootPath + "/storage/temp/" + filename;
-			if (System.IO.File.Exists(path))
-			{
-				return Json(new { status = true, fileSize = new FileInfo(path).Length });
-			}
-			else
-			{
-				return Json(new { status = false });
-			}
-		}
+		//[HttpHead]
+		//public IActionResult Index(string filename)
+		//{
+		//	var path = this.Environment.WebRootPath + "/storage/temp/" + filename;
+		//	if (System.IO.File.Exists(path))
+		//	{
+		//		return Json(new { status = true, fileSize = new FileInfo(path).Length });
+		//	}
+		//	else
+		//	{
+		//		return Json(new { status = false });
+		//	}
+		//}
 	}
 }
