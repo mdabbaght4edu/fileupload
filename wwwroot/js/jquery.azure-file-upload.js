@@ -59,6 +59,8 @@
 			}
 
 			if (elm.value == '') {
+				selectedFile = null;
+				_onSelect();
 				return false;
 			}
 			else {
@@ -138,9 +140,7 @@
 			var uploadOptions = {
 				blockSize: customBlockSize,
 				parallelOperationThreadCount: 1,
-				metadata: {
-					isTemp: true
-				}
+				metadata: options.blobMetaData,
 			};
 
 			_cancelUploadFilter.cancel = false;
@@ -244,6 +244,7 @@
 		containerName: null,
 		blobName: null,
 		sasToken: null,
+		blobMetaData: { },
 		autoUpload: true,
 		acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
 		maxFileSize: 1024 * 1024 * 10,

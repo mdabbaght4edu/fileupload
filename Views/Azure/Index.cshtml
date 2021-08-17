@@ -76,6 +76,9 @@
 			containerName: '@Html.Raw(Model.ContainerName)',
 			blobName: '@Html.Raw(Model.BlobName)',
 			sasToken: '@Html.Raw(Model.SASToken)',
+			blobMetaData: {
+				isTemp: true,
+			},
 			autoUpload: true,
 			acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|zip|rar)$/i,
 			maxFileSize: 1024 * 1024 * 20,
