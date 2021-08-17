@@ -163,7 +163,7 @@ namespace UploadingLagreFiles_JavaScriptFileSplit.Controllers
 			var filename = Path.GetFileName(azurePath);
 			var localPath = this.Environment.WebRootPath + "/storage/temp/" + filename;
 
-			if (!AzureHelper.Blob.Download(filename, localPath))
+			if (!AzureHelper.Blob.Download(azurePath, localPath))
 			{
 				return Json(new { status = false, message = "can not download file" });
 			}

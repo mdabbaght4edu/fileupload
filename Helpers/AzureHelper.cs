@@ -241,9 +241,9 @@ namespace UploadingLagreFiles_JavaScriptFileSplit.Helpers
                 }
             }
 
-            public static bool Download(string filePath, string localPath)
+            public static bool Download(string blobName, string localPath)
             {
-                if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrWhiteSpace(localPath))
+                if (string.IsNullOrWhiteSpace(blobName) || string.IsNullOrWhiteSpace(localPath))
                 {
                     return false;
                 }
@@ -255,13 +255,13 @@ namespace UploadingLagreFiles_JavaScriptFileSplit.Helpers
 
                 try
                 {
-                    filePath = filePath.Trim(new char[] { ' ', '/' });
-                    if (filePath.StartsWith(BlobContainerName, StringComparison.OrdinalIgnoreCase))
+                    blobName = blobName.Trim(new char[] { ' ', '/' });
+                    if (blobName.StartsWith(BlobContainerName, StringComparison.OrdinalIgnoreCase))
                     {
-                        filePath = filePath.Replace(BlobContainerName, "").Trim(new char[] { ' ', '/' });
+                        blobName = blobName.Replace(BlobContainerName, "").Trim(new char[] { ' ', '/' });
                     }
 
-                    var blobClient = VSchoolBlobContainerClient.GetBlobClient(filePath);
+                    var blobClient = VSchoolBlobContainerClient.GetBlobClient(blobName);
                     blobClient.DownloadTo(localPath);
                     return true;
                 }
