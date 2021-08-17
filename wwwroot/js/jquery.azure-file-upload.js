@@ -259,7 +259,7 @@
 		onProgress: function (azure, file, progress) { },
 		onCacnel: function (azure, file) { },
 		onError: function (azure, file, error) { },
-		onFinish: function (azure, file, blobfullUrl) { },
+		onFinish: function (azure, file, blobName) { },
 	};
 
 }(jQuery));
